@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+def config = rootProject.ext
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        targetCompatibility config.javaVersion
+        sourceCompatibility config.javaVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':mvp')
+
+    implementation config.libSupportAppcompat
+    implementation config.libSupportDesign
+
+    implementation config.libLifecycleRuntime
+    implementation config.libLifecycleExtensions
+    annotationProcessor config.libLifecycleCompiler
+
+    implementation config.libTimber
+
+    implementation config.libDagger
+    implementation config.libDaggerAndroid
+    implementation config.libDaggerAndroidSupport
+    annotationProcessor config.libDaggerAnnotation
+    annotationProcessor config.libDaggerAndroidAnnotation
+
+    implementation config.libButterKnife
+    annotationProcessor config.libButterKnifeAnnotation
+
+    implementation config.libRxJava
+    implementation config.libRxAndroid
+    implementation config.libRxBinding
+
+    testImplementation config.libJunit
+    androidTestImplementation config.libTestRunner
+    androidTestImplementation config.libTestEspressoCore
+    androidTestAnnotationProcessor config.libAutoValue
+}
