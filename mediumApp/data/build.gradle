@@ -1,0 +1,92 @@
+apply plugin: 'com.android.library'
+
+def config = rootProject.ext
+
+android {
+    publishNonDefault true
+
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+    }
+
+    buildTypes {
+        debug {
+        }
+
+        release {
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    lintOptions {
+        quiet true
+        abortOnError config.abortOnLintError
+        ignoreWarnings true
+        disable 'InvalidPackage'  // Some libraries have issues with this
+        disable 'OldTargetApi'    // Due to Robolectric that modifies the manifest when running tests
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':utils')
+    compileOnly config.libJavaxAnnotation
+    implementation config.libJavaxInject
+    implementation config.libOkHttp
+    implementation config.libGson
+    implementation config.libRxJava
+    implementation config.libRxAndroid
+    implementation config.libRxPreferences
+    implementation config.libRxObjectBox
+    implementation config.libRxCache
+    implementation config.libReactiveCache
+
+    implementation config.libSupportAnnotations
+    implementation config.libRetrofit
+    implementation config.libRetrofitConverterMoshi
+    implementation config.libRetrofitConverterGson
+    implementation config.libRetrofitMock
+    implementation config.libRetrofitAdapterRxJava
+
+    implementation config.libThreetenabp 
+
+    implementation config.libAutoValue
+    annotationProcessor config.libAutoValue
+
+    implementation config.libTimber
+
+    implementation config.libDagger
+    implementation config.libDaggerAndroid
+    implementation config.libDaggerAndroidSupport
+    annotationProcessor config.libDaggerAnnotation
+    annotationProcessor config.libDaggerAndroidAnnotation
+
+    releaseImplementation config.libObjectBoxAndroid
+    debugImplementation config.libObjectBoxAndroidDebug
+
+    testImplementation config.libJunit
+    testImplementation config.libAssertj
+    testImplementation config.libMockito
+    testImplementation config.libRobolectric
+}
+
+apply plugin: 'io.objectbox' // 必须排在debugImplementation config.libObjectBoxAndroidDebug 后面， 所以最后放到这里了

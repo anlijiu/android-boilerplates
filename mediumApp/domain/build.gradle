@@ -1,0 +1,33 @@
+apply plugin: 'java'
+
+def config = rootProject.ext
+
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = 1.8
+//noinspection GroovyUnusedAssignment
+targetCompatibility = 1.8
+
+configurations {
+    provided
+}
+
+sourceSets {
+    main {
+        compileClasspath += configurations.provided
+    }
+}
+
+dependencies {
+    compileOnly config.libJavaxAnnotation
+
+    implementation config.libJavaxInject
+    implementation config.libRxJava
+
+    implementation config.libAutoValue
+    compileOnly config.libAutoValue
+
+
+    testCompile config.libJunit
+    testCompile config.libMockito
+    testCompile config.libAssertj
+}

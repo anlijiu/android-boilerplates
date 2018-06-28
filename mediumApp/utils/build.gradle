@@ -1,0 +1,73 @@
+apply plugin: 'com.android.library'
+
+
+def config = rootProject.ext
+
+android {
+    publishNonDefault true
+
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    lintOptions {
+        abortOnError config.abortOnLintError
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation config.libSupportAppcompat
+    implementation config.libSupportRecyclerview
+    implementation config.libSupportDesign
+
+    implementation config.libRxAndroid
+    implementation config.libRxJava
+    implementation config.libRxPreferences
+    implementation config.libRxBinding
+    implementation config.libRxBindingSupportV4
+    implementation config.libRxBindingAppcompatV7
+    implementation config.libRxBindingDesign
+    implementation config.libRxBindingRecyclerview
+
+    implementation config.libOkio
+
+    implementation config.libGson
+
+    implementation config.libAutoValue
+    annotationProcessor config.libAutoValue
+
+    implementation config.libButterKnife
+    annotationProcessor config.libButterKnifeAnnotation
+
+    implementation config.libDagger
+    implementation config.libDaggerAndroid
+    implementation config.libDaggerAndroidSupport
+    annotationProcessor config.libDaggerAnnotation
+    annotationProcessor config.libDaggerAndroidAnnotation
+
+    implementation config.libThreetenabp
+
+    implementation config.libTimber
+
+    testImplementation config.libJunit
+    androidTestImplementation config.libTestRunner
+    androidTestImplementation config.libTestEspressoCore
+    androidTestAnnotationProcessor config.libAutoValue
+}

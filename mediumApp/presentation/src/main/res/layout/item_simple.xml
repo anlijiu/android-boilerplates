@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.anlijiu.example.domain.objects.SimpleItem" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/card_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{item.name()}"/>
+    </LinearLayout>
+
+
+</layout>
+

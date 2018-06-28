@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+
+import java.text.DateFormat;
+
+def config = rootProject.ext
+
+def locale = new Locale("zh", "CN");
+def dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+def buildTime = dateFormat.format(new Date())
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    dataBinding {
+        enabled = true
+    }
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+        buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
+
+    }
+
+    compileOptions {
+        targetCompatibility config.javaVersion
+        sourceCompatibility config.javaVersion
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {//目录指向配置
+        debug.setRoot('src/debug')//指定debug模式的路径
+        release.setRoot('src/release')//指定release模式的路径
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':mvp')
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':utils')
+
+    implementation config.libSupportAppcompat
+    implementation config.libSupportDesign
+
+    implementation config.libLifecycleRuntime
+    implementation config.libLifecycleExtensions
+    annotationProcessor config.libLifecycleCompiler
+
+    implementation config.libTimber
+
+    implementation config.libDagger
+    implementation config.libDaggerAndroid
+    implementation config.libDaggerAndroidSupport
+    annotationProcessor config.libDaggerAnnotation
+    annotationProcessor config.libDaggerAndroidAnnotation
+
+    implementation config.libThreetenabp 
+
+    implementation config.libButterKnife
+    annotationProcessor config.libButterKnifeAnnotation
+
+    implementation config.libObjectBoxJava
+
+    implementation config.libRxJava
+    implementation config.libRxAndroid
+    implementation config.libRxBinding
+    implementation config.libRxPreferences
+
+    debugImplementation config.debugDependencies.leakCanary
+    releaseImplementation config.debugDependencies.leakCanary
+
+    debugImplementation config.libMadge
+    debugImplementation config.libScalpel
+    debugImplementation config.libProcessPhoenix
+
+    testImplementation config.libJunit
+    androidTestImplementation config.libTestRunner
+    androidTestImplementation config.libTestEspressoCore
+    androidTestAnnotationProcessor config.libAutoValue
+}

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">utils</string>
+    <string name="no_intent_handler">no intent handler</string>
+</resources>

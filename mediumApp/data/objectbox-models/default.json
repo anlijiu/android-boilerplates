@@ -1,0 +1,142 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:6999437007613118248",
+      "lastPropertyId": "4:3463043050978808062",
+      "name": "CardEntity",
+      "properties": [
+        {
+          "id": "1:4721308355550497369",
+          "name": "id"
+        },
+        {
+          "id": "2:8052856852128256267",
+          "name": "coverImageUrl"
+        },
+        {
+          "id": "3:6183808642233371037",
+          "name": "title"
+        },
+        {
+          "id": "4:3463043050978808062",
+          "name": "targetUrl"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:8007705666966290345",
+      "lastPropertyId": "3:8184846731875635072",
+      "name": "ComponentNameEntity",
+      "properties": [
+        {
+          "id": "1:4073355204301826757",
+          "name": "id"
+        },
+        {
+          "id": "2:4410970018873627806",
+          "name": "pkg"
+        },
+        {
+          "id": "3:8184846731875635072",
+          "name": "cls"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:7324727885017598891",
+      "lastPropertyId": "18:1239778488295304742",
+      "name": "ItemInfoEntity",
+      "properties": [
+        {
+          "id": "1:8863625463572656888",
+          "name": "id"
+        },
+        {
+          "id": "2:1979188517325477517",
+          "name": "prevId"
+        },
+        {
+          "id": "3:6885266762717776059",
+          "name": "nextId"
+        },
+        {
+          "id": "4:6727763578341852284",
+          "name": "title"
+        },
+        {
+          "id": "5:714861688837344540",
+          "name": "intent"
+        },
+        {
+          "id": "6:119664797015527085",
+          "name": "container"
+        },
+        {
+          "id": "7:4651568694020104572",
+          "name": "itemType"
+        },
+        {
+          "id": "8:8613475548583736502",
+          "name": "appWidgetId"
+        },
+        {
+          "id": "9:9096480238613259349",
+          "name": "iconPackage"
+        },
+        {
+          "id": "10:760245988623291270",
+          "name": "iconResource"
+        },
+        {
+          "id": "11:1188127043411117369",
+          "name": "icon"
+        },
+        {
+          "id": "12:4065016023653895636",
+          "name": "appWidgetProvider"
+        },
+        {
+          "id": "13:203351996660179594",
+          "name": "modified"
+        },
+        {
+          "id": "14:4847900413228512163",
+          "name": "restored"
+        },
+        {
+          "id": "15:6202778283422623503",
+          "name": "profileId"
+        },
+        {
+          "id": "16:1471011012815629931",
+          "name": "rank"
+        },
+        {
+          "id": "17:8443626360885418708",
+          "name": "options"
+        },
+        {
+          "id": "18:1239778488295304742",
+          "name": "screen"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "3:7324727885017598891",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
