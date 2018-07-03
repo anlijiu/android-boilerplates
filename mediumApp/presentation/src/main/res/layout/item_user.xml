@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.anlijiu.example.domain.objects.User" />
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/card_root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            app:actualImageScaleType="centerCrop"
+            app:placeholderImage="@color/grey_300"
+            app:placeholderImageScaleType="fitCenter"
+            app:layout_collapseMode="parallax"
+            app:layout_collapseParallaxMultiplier="0.7"
+            app:imageUrl="@{item.avatarUrl()}"
+            app:roundingBorderColor="#a0333333"
+            app:roundingBorderWidth="1dp"/>
+    </LinearLayout>
+
+
+</layout>
+

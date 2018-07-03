@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.f2prateek.rx.preferences2:rx-preferences-2.0.0-RC3">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/rx-preferences-2.0.0-RC3.aar/31691641d75267a7675ac947f07f17aa/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/rx-preferences-2.0.0-RC3.aar/31691641d75267a7675ac947f07f17aa/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/rx-preferences-2.0.0-RC3.aar/a024e455ec6af6b9b3f759ee9a5348df/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/rx-preferences-2.0.0-RC3.aar/a024e455ec6af6b9b3f759ee9a5348df/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -7,10 +7,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://repo.maven.apache.org/maven2' }
     }
     dependencies {
         classpath "io.objectbox:objectbox-gradle-plugin:1.5.0"
-        classpath 'com.android.tools.build:gradle:3.2.0-beta01'
+        classpath 'com.android.tools.build:gradle:3.2.0-beta02'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,6 +24,8 @@ allprojects {
         jcenter()
         maven { url "http://objectbox.net/beta-repo/" }
         maven { url "https://jitpack.io" }
+        // apache maven repo
+        maven { url 'http://repo1.maven.org/maven2' }
         flatDir {
             dirs 'libs'
         }

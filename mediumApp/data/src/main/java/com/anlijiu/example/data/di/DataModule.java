@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Environment;
 
-import com.anlijiu.example.data.BuildConfig;
 import com.anlijiu.example.data.cache.CardCache;
 import com.anlijiu.example.data.cache.CardCacheImpl;
 import com.anlijiu.example.data.compat.AppWidgetManagerCompat;
@@ -14,12 +13,15 @@ import com.anlijiu.example.data.compat.LauncherAppsCompat;
 import com.anlijiu.example.data.compat.LauncherAppsCompatVO;
 import com.anlijiu.example.data.compat.UserManagerCompat;
 import com.anlijiu.example.data.compat.UserManagerCompatVNMr1;
-import com.anlijiu.example.data.entity.MyObjectBox;
+import com.anlijiu.example.data.exception.RxErrorHandlingCallAdapterFactory;
 import com.anlijiu.example.data.repository.CardDataRepository;
 
+import com.anlijiu.example.data.repository.CloudDataRepository;
 import com.anlijiu.example.data.repository.ItemInfoDataRepository;
 import com.anlijiu.example.data.repository.SimpleDataRepository;
+import com.anlijiu.example.domain.objects.AutoValueGsonTypeAdapterFactory;
 import com.anlijiu.example.domain.repository.CardRepository;
+import com.anlijiu.example.domain.repository.CloudRepository;
 import com.anlijiu.example.domain.repository.ItemInfoRepository;
 import com.anlijiu.example.domain.repository.SimpleRepository;
 import com.anlijiu.example.utils.PermissionUtils;
@@ -29,20 +31,28 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.objectbox.BoxStore;
+import io.rx_cache2.internal.RxCache;
+import io.victoralbertos.jolyglot.GsonSpeaker;
+import okhttp3.Cache;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 import static android.content.Context.MODE_PRIVATE;
 
 
-@Module
+@Module(includes = ApiModule.class)
 public class DataModule {
+    static final int OKHTTP_DISK_CACHE_SIZE = 50 * 1024 * 1024; // 50MB
 
     @Provides
     @Singleton
@@ -68,6 +78,11 @@ public class DataModule {
         return repository;
     }
 
+    @Provides
+    @Singleton
+    CloudRepository provideCloudRepository(CloudDataRepository repository) {
+        return repository;
+    }
 
     @Provides
     @Singleton
@@ -93,8 +108,7 @@ public class DataModule {
     Gson provideGson() {
         return new GsonBuilder()
 //                .setExclusionStrategies(new ExclusionUnderlineStrategy())
-//                .registerTypeAdapterFactory(AutoValueAdapterFactory.create())
-//                .registerTypeAdapterFactory(CloudGsonAdapterFactory.create())
+                .registerTypeAdapterFactory(AutoValueGsonTypeAdapterFactory.create())
                 .setPrettyPrinting()
                 .create();
     }
@@ -107,9 +121,9 @@ public class DataModule {
         if ((Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable())
                 && PermissionUtils.hasPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
-            cacheDir = context.getExternalFilesDir("");
+            cacheDir = context.getExternalCacheDir();
         } else {
-            cacheDir = context.getFilesDir();
+            cacheDir = context.getCacheDir();
         }
         return cacheDir;
     }
@@ -118,8 +132,58 @@ public class DataModule {
     @Singleton
     @Named("Data")
     File provideDataCacheDir(@Named("Root") File dir){
-        return new File(dir, "data");
+            File dataCacheDir = new File(dir, "data");
+            if(!dataCacheDir.exists()) {
+                dataCacheDir.mkdirs();
+            }
+            return dataCacheDir;
     }
+
+
+    @Provides
+    @Singleton
+    @Named("Http")
+    File provideHttpCacheDir(@Named("Root") File dir){
+        File httpCacheDir = new File(dir, "http");
+        if(!httpCacheDir.exists()) {
+            httpCacheDir.mkdirs();
+        }
+        return httpCacheDir;
+    }
+
+
+    @Provides
+    @Singleton
+    RxCache provideRxCache(@Named("Http") File cacheDir) {
+        return new RxCache.Builder().persistence(cacheDir, new GsonSpeaker());
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient.Builder provideOkhttpBuilder(Application application, @Named("Http") File cacheDir) {
+        Cache cache = new Cache(cacheDir, OKHTTP_DISK_CACHE_SIZE);
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .cache(cache);
+
+    }
+
+
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit(HttpUrl baseUrl, OkHttpClient client, Gson gson) {
+
+        return new Retrofit.Builder() //
+                .client(client) //
+                .baseUrl(baseUrl) //
+                .addConverterFactory(GsonConverterFactory.create(gson)) //
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                //.addCallAdapterFactory(RxJavaCallAdapterFactory.create()) //
+                .build();
+    }
+
 
     @Provides
     @Singleton

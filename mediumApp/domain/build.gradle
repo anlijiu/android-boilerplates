@@ -23,8 +23,12 @@ dependencies {
     implementation config.libJavaxInject
     implementation config.libRxJava
 
+    implementation config.libGson
+
     implementation config.libAutoValue
-    compileOnly config.libAutoValue
+    annotationProcessor config.libAutoValueAnnotation
+    implementation config.libAutoValueGson
+    annotationProcessor config.libAutoValueGsonAnnotation
 
 
     testCompile config.libJunit

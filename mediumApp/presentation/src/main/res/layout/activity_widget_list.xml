@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.anlijiu.example.ui.recyclerview.LayoutManagers" />
+
+        <import type="android.widget.LinearLayout" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.anlijiu.example.presentation.appwidget.WidgetListViewModel" />
+
+        <variable
+            name="itemClickListener"
+            type="com.anlijiu.example.ui.recyclerview.OnItemClickListener" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        tools:context="com.anlijiu.example.presentation.appwidget.WidgetListActivity">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:overScrollMode="never"
+            app:adapter="@{viewModel.adapter}"
+            app:delegates="@{viewModel.delegates}"
+            app:items="@{viewModel.items}"
+            app:layoutManager="@{LayoutManagers.linear()}"
+            app:onItemClickLisener="@{itemClickListener}"
+            app:viewModel="@{viewModel}" />
+
+    </RelativeLayout>
+</layout>

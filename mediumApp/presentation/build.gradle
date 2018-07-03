@@ -67,6 +67,7 @@ dependencies {
 
     implementation config.libLifecycleRuntime
     implementation config.libLifecycleExtensions
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor config.libLifecycleCompiler
 
     implementation config.libTimber
@@ -76,6 +77,16 @@ dependencies {
     implementation config.libDaggerAndroidSupport
     annotationProcessor config.libDaggerAnnotation
     annotationProcessor config.libDaggerAndroidAnnotation
+
+    implementation config.libAutoValue
+    annotationProcessor config.libAutoValueAnnotation
+    implementation config.libAutoValueGson
+    annotationProcessor config.libAutoValueGsonAnnotation
+
+    implementation config.libGson
+
+    implementation config.libFresco
+    implementation config.libFrescoOkHttp3
 
     implementation config.libThreetenabp 
 
@@ -88,6 +99,15 @@ dependencies {
     implementation config.libRxAndroid
     implementation config.libRxBinding
     implementation config.libRxPreferences
+
+    implementation config.libRetrofit
+    implementation config.libRetrofitConverterMoshi
+    implementation config.libRetrofitConverterGson
+    implementation config.libRetrofitMock
+    implementation config.libRetrofitAdapterRxJava
+
+    implementation config.libRxCache
+    implementation config.libJolyglotGson 
 
     debugImplementation config.debugDependencies.leakCanary
     releaseImplementation config.debugDependencies.leakCanary

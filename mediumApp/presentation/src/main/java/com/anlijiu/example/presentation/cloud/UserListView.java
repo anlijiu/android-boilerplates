@@ -1,9 +1,9 @@
-package com.anlijiu.example.presentation.main;
+package com.anlijiu.example.presentation.cloud;
 
 import com.example.mvp.IMvpView;
 
 import io.reactivex.Observable;
 
-public interface MainView extends IMvpView {
+public interface UserListView extends IMvpView {
     Observable<Object> increaseCount();
 }

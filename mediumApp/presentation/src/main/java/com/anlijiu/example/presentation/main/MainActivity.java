@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.anlijiu.example.di.DaggerAppComponent;
+import com.anlijiu.example.presentation.appwidget.WidgetListActivity;
+import com.anlijiu.example.presentation.cloud.UserListActivity;
 import com.anlijiu.example.presentation.simple.SimpleActivity;
 import com.example.mvp.BaseMvpActivity;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -44,15 +46,16 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     }
 
-    @OnClick({R.id.btn_simple})
+    @OnClick({R.id.btn_simple, R.id.btn_appwidget, R.id.btn_userlist})
     void onClick(View view) {
-        Intent intent;
         switch (view.getId()) {
             case R.id.btn_simple:
-                intent = new Intent(this, SimpleActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, SimpleActivity.class));
                 break;
-
+            case R.id.btn_appwidget:
+                startActivity(new Intent(this, WidgetListActivity.class));
+            case R.id.btn_userlist:
+                startActivity(new Intent(this, UserListActivity.class));
             default:
                 break;
         }

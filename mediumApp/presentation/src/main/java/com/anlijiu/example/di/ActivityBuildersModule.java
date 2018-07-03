@@ -4,6 +4,8 @@ package com.anlijiu.example.di;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.anlijiu.example.presentation.appwidget.WidgetListActivity;
+import com.anlijiu.example.presentation.cloud.UserListActivity;
 import com.anlijiu.example.presentation.main.MainActivity;
 import com.anlijiu.example.di.scope.ActivityScope;
 import com.anlijiu.example.presentation.simple.SimpleActivity;
@@ -25,6 +27,14 @@ public abstract class ActivityBuildersModule {
     @ActivityScope
     @ContributesAndroidInjector()
     abstract SimpleActivity simpleActivityInjector();
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract WidgetListActivity widgetListActivityInjector();
+
+    @ActivityScope
+    @ContributesAndroidInjector()
+    abstract UserListActivity userListActivityInjector();
 
     @Binds
     @ActivityScope

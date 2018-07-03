@@ -14,6 +14,11 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode config.versionCode
         versionName config.versionName
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ['autovaluegson.defaultCollectionsToEmpty': 'true']
+            }
+        }
     }
 
     buildTypes {
@@ -48,6 +53,7 @@ android {
 
 dependencies {
     implementation project(':domain')
+    api project(':domain')
     implementation project(':utils')
     compileOnly config.libJavaxAnnotation
     implementation config.libJavaxInject
@@ -58,6 +64,7 @@ dependencies {
     implementation config.libRxPreferences
     implementation config.libRxObjectBox
     implementation config.libRxCache
+    implementation config.libJolyglotGson 
     implementation config.libReactiveCache
 
     implementation config.libSupportAnnotations
@@ -70,7 +77,16 @@ dependencies {
     implementation config.libThreetenabp 
 
     implementation config.libAutoValue
+    annotationProcessor config.libAutoValueAnnotation
     annotationProcessor config.libAutoValue
+    api config.libAutoValue
+    api config.libAutoValueAnnotation
+
+    implementation config.libAutoValueGson
+    annotationProcessor config.libAutoValueGson
+    annotationProcessor config.libAutoValueGsonAnnotation
+    api config.libAutoValueGson
+    api config.libAutoValueGsonAnnotation
 
     implementation config.libTimber
 

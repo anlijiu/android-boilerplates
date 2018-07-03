@@ -2,6 +2,7 @@ package com.anlijiu.example.di;
 
 
 import com.anlijiu.example.SampleApplication;
+import com.anlijiu.example.data.di.DebugApiModule;
 import com.anlijiu.example.data.di.DebugDataModule;
 
 import javax.inject.Singleton;
@@ -14,6 +15,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {
         AppModule.class,
         DebugDataModule.class,
+        DebugApiModule.class,
         DebugUiModule.class,
         DebugActivityBuildersModule.class,
         DebugViewModule.class,

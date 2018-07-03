@@ -2,4 +2,5 @@
     <string name="app_name">sample</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="btn_text">button</string>
+    <string name="title_activity_user_list">UserListActivity</string>
 </resources>

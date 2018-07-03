@@ -8,7 +8,7 @@ def rxAndroidVersion = "2.0.2"
 def rxPreferenceVersion = "2.0.0-RC3"
 def rxBindingVersion = "2.1.1"
 def rxObjectBoxVersion = "0.9.8"
-def frescoVersion = "1.5.0"
+def frescoVersion = "1.9.0"
 def okioVersion = "1.14.0"
 def okhttpVersion = "3.10.0"
 def retrofitVersion = "2.4.0"
@@ -16,6 +16,7 @@ def diskLruCacheVersion = "2.0.2"
 def threetenabpVersion = "1.0.5"
 def reactivecacheVersion = "1.1.3-2.x"
 def rxcacheVersion = "1.8.3-2.x"
+def jolyglotGsonVersion = "0.0.4"  
 
 def javaxAnnotationVersion = "1.0"
 def javaxInjectVersion = "1"
@@ -27,8 +28,8 @@ def gsonVersion = "2.8.2"
 
 def arrowVersion = "1.0.0"
 
-def autoValueVersion = "1.5.4"
-def autoValueGsonVersion = "0.7.0"
+def autoValueVersion = "1.6.2"
+def autoValueGsonVersion = "0.8.0"
 def autoValueParcelVersion = "0.2.6"
 
 def objectBoxVersion = "1.5.0"
@@ -122,6 +123,7 @@ ext {
     // 文件缓存
     libDiskLruCache = "com.jakewharton:disklrucache:${diskLruCacheVersion}"
     libRxCache = "com.github.VictorAlbertos.RxCache:runtime:${rxcacheVersion}"
+    libJolyglotGson = "com.github.VictorAlbertos.Jolyglot:gson:${jolyglotGsonVersion}"
     libReactiveCache = "com.github.VictorAlbertos:ReactiveCache:${reactivecacheVersion}"
     //图片缓存
     libFresco = "com.facebook.fresco:fresco:${frescoVersion}"
@@ -158,8 +160,11 @@ ext {
     libRecyclerviewFlexibleDivider = 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 
     //自动生成pojo/bean
-    libAutoValue = "com.google.auto.value:auto-value:${autoValueVersion}"
-    libAutoValueGson = "com.ryanharter.auto.value:auto-value-gson:${autoValueGsonVersion}"
+    libAutoValueAnnotation = "com.google.auto.value:auto-value:${autoValueVersion}"
+    libAutoValue = "com.google.auto.value:auto-value-annotations:${autoValueVersion}"
+    // auto-value-gson要求gson 版本最低要2.8.0
+    libAutoValueGsonAnnotation  = "com.ryanharter.auto.value:auto-value-gson:${autoValueGsonVersion}"
+    libAutoValueGson = "com.ryanharter.auto.value:auto-value-gson-annotations:${autoValueGsonVersion}"
     libAutoParcel = "com.ryanharter.auto.value:auto-value-parcel:${autoValueParcelVersion}"
     libAutoParcelAdapter = "com.ryanharter.auto.value:auto-value-parcel-adapter:${autoValueParcelVersion}"
 

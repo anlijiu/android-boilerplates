@@ -10,6 +10,7 @@ import com.anlijiu.example.SampleApplication;
 import com.anlijiu.example.data.executor.JobExecutor;
 import com.anlijiu.example.domain.executor.PostExecutionThread;
 import com.anlijiu.example.domain.executor.ThreadExecutor;
+import com.anlijiu.example.presentation.appwidget.LauncherAppWidgetHost;
 import com.anlijiu.example.ui.UIThread;
 
 import javax.inject.Singleton;
@@ -42,4 +43,11 @@ public class AppModule {
     PostExecutionThread providePostExecutionThread(UIThread uiThread) {
         return uiThread;
     }
+
+    @Provides
+    @Singleton
+    AppWidgetHost provideAppWidgetHost(LauncherAppWidgetHost launcherAppWidgetHost) {
+        return launcherAppWidgetHost;
+    }
+
 }
