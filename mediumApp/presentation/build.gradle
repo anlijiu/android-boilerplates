@@ -88,6 +88,8 @@ dependencies {
     implementation config.libFresco
     implementation config.libFrescoOkHttp3
 
+    implementation config.libOkHttpLoggingInterceptor
+
     implementation config.libThreetenabp 
 
     implementation config.libButterKnife

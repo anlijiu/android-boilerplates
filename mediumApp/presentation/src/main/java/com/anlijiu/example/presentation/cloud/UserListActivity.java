@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.anlijiu.example.ui.ViewContainer;
 import com.example.mvp.BaseMvpActivity;
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView;
@@ -38,6 +39,9 @@ public class UserListActivity extends BaseMvpActivity<UserListView, UserListPres
 
     @Inject
     UserListPresenter presenter;
+
+    @Inject
+    ViewContainer viewContainer;
 
     @BindView(R.id.pb_loading)
     MaterialProgressBar pbLoading;
@@ -67,6 +71,11 @@ public class UserListActivity extends BaseMvpActivity<UserListView, UserListPres
     @Override
     protected Class<UserListViewModel> viewModelClass() {
         return UserListViewModel.class;
+    }
+
+    @Override
+    protected ViewGroup container() {
+        return viewContainer.forActivity(this);
     }
 
     @Override

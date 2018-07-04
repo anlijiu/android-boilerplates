@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 
 import com.anlijiu.example.data.cloud.ApiEndpoints;
+import com.anlijiu.example.data.cloud.CurlLoggingInterceptor;
 import com.anlijiu.example.data.di.qualifier.ApiEndpoint;
 import com.anlijiu.example.data.di.qualifier.NetworkDelay;
 import com.anlijiu.example.data.di.qualifier.NetworkFailurePercent;
@@ -39,6 +40,8 @@ import dagger.Provides;
 import io.objectbox.BoxStore;
 import io.objectbox.android.AndroidObjectBrowser;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import timber.log.Timber;
 
 @Module(includes = {DataModule.class})
 public final class DebugDataModule {
@@ -65,15 +68,35 @@ public final class DebugDataModule {
         return new AndroidObjectBrowser(boxStore);
     }
 
+    @Provides
+    @Singleton
+    CurlLoggingInterceptor provideCurlLoggingInterceptor() {
+        return new CurlLoggingInterceptor(message -> Timber.tag("Curl").v(message));
+    }
+
+    @Provides
+    @Singleton
+    HttpLoggingInterceptor provideLoggingInterceptor() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").v(message));
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        return loggingInterceptor;
+    }
+
 
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient(OkHttpClient.Builder builder,
+                                     CurlLoggingInterceptor curlLoggingInterceptor,
+                                     HttpLoggingInterceptor httpLoggingInterceptor,
                                      Preference<InetSocketAddress> networkProxyAddress) {
+        InetSocketAddress inetSocketAddress = networkProxyAddress.get();
+        if(inetSocketAddress.getPort() != 0) {
+            builder.proxy(InetSocketAddressPreferenceAdapter.createProxy(inetSocketAddress));
+        }
         return builder
-//                 .addNetworkInterceptor(new StethoInterceptor())
+                .addInterceptor(curlLoggingInterceptor)
+                .addInterceptor(httpLoggingInterceptor)
                 .sslSocketFactory(createBadSslSocketFactory())
-//                .proxy(InetSocketAddressPreferenceAdapter.createProxy(networkProxyAddress.get()))
                 .build();
     }
 

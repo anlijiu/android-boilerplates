@@ -61,6 +61,8 @@ import com.anlijiu.example.data.LumberYard;
 import com.anlijiu.example.ui.logs.LogsDialog;
 import com.anlijiu.example.ui.misc.EnumAdapter;
 
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
@@ -109,8 +111,19 @@ public final class DebugView extends FrameLayout {
     @BindView(R.id.debug_device_api)
     TextView deviceApiView;
 
+
+    @BindView(R.id.debug_okhttp_cache_max_size) TextView okHttpCacheMaxSizeView;
+
+    @BindView(R.id.debug_okhttp_cache_write_error) TextView okHttpCacheWriteErrorView;
+    @BindView(R.id.debug_okhttp_cache_request_count) TextView okHttpCacheRequestCountView;
+    @BindView(R.id.debug_okhttp_cache_network_count) TextView okHttpCacheNetworkCountView;
+    @BindView(R.id.debug_okhttp_cache_hit_count) TextView okHttpCacheHitCountView;
+
     @Inject
     LumberYard lumberYard;
+
+    @Inject
+    OkHttpClient client;
 
     @Inject
     @CaptureIntents
@@ -150,6 +163,7 @@ public final class DebugView extends FrameLayout {
         setupUserInterfaceSection();
         setupBuildSection();
         setupDeviceSection();
+        setupOkHttpCacheSection();
         Set<ContextualDebugActions.DebugAction<?>> debugActions = Collections.emptySet();
         contextualDebugActions = new ContextualDebugActions(this, debugActions);
     }
@@ -160,6 +174,7 @@ public final class DebugView extends FrameLayout {
 
     public void onDrawerOpened() {
         Timber.d("DebugView onDrawerOpened");
+        refreshOkHttpCacheStats();
     }
 
 
@@ -251,6 +266,25 @@ public final class DebugView extends FrameLayout {
         deviceReleaseView.setText(Build.VERSION.RELEASE);
         deviceApiView.setText(String.valueOf(Build.VERSION.SDK_INT));
     }
+
+    private void setupOkHttpCacheSection() {
+        Cache cache = client.cache(); // Shares the cache with apiClient, so no need to check both.
+        okHttpCacheMaxSizeView.setText(getSizeString(cache.maxSize()));
+
+        refreshOkHttpCacheStats();
+    }
+
+    private void refreshOkHttpCacheStats() {
+        Cache cache = client.cache(); // Shares the cache with apiClient, so no need to check both.
+        int writeTotal = cache.writeSuccessCount() + cache.writeAbortCount();
+        int percentage = (int) ((1f * cache.writeAbortCount() / writeTotal) * 100);
+        okHttpCacheWriteErrorView.setText(
+                cache.writeAbortCount() + " / " + writeTotal + " (" + percentage + "%)");
+        okHttpCacheRequestCountView.setText(String.valueOf(cache.requestCount()));
+        okHttpCacheNetworkCountView.setText(String.valueOf(cache.networkCount()));
+        okHttpCacheHitCountView.setText(String.valueOf(cache.hitCount()));
+    }
+
 
     private void applyAnimationSpeed(int multiplier) {
         try {

@@ -3,6 +3,7 @@ package com.anlijiu.example;
 import android.app.Application;
 import android.view.View;
 
+import com.anlijiu.example.data.LumberYard;
 import com.anlijiu.example.di.DaggerAppComponent;
 import com.anlijiu.example.BuildConfig;
 import com.anlijiu.example.di.HasViewInjector;
@@ -25,6 +26,7 @@ import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFact
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
+import com.squareup.leakcanary.LeakCanary;
 
 
 public class SampleApplication extends DaggerApplication implements HasViewInjector {
@@ -34,6 +36,8 @@ public class SampleApplication extends DaggerApplication implements HasViewInjec
     ActivityLifecyclesServer activityLifecyclesServer;
     @Inject
     OkHttpClient okHttpClient;
+    @Inject
+    LumberYard lumberYard;
 
     @Override
     public void onCreate() {
@@ -45,6 +49,7 @@ public class SampleApplication extends DaggerApplication implements HasViewInjec
 
         initTimber();
         initImageLoader();
+        initLeakCanary();
     }
 
     @Override
@@ -61,6 +66,8 @@ public class SampleApplication extends DaggerApplication implements HasViewInjec
             // TODO Timber.plant(new CrashlyticsTree());
             Timber.plant(new Timber.DebugTree());
         }
+
+        Timber.plant(lumberYard.tree());
     }
 
     private void watchUncaughtException(){
@@ -69,6 +76,15 @@ public class SampleApplication extends DaggerApplication implements HasViewInjec
 
     private void initRxGlobalErrorHandler() {
         RxJavaPlugins.setErrorHandler(throwable -> Timber.e(throwable));
+    }
+
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
     }
 
     private static final int MAX_HEAP_SIZE = (int) Runtime.getRuntime().maxMemory();

@@ -58,6 +58,7 @@ dependencies {
     compileOnly config.libJavaxAnnotation
     implementation config.libJavaxInject
     implementation config.libOkHttp
+    implementation config.libOkHttpLoggingInterceptor
     implementation config.libGson
     implementation config.libRxJava
     implementation config.libRxAndroid

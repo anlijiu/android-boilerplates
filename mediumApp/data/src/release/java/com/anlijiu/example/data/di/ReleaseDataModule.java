@@ -13,6 +13,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.objectbox.BoxStore;
+import okhttp3.OkHttpClient;
 
 @Module(includes = {DataModule.class})
 public final class ReleaseDataModule {
@@ -22,5 +23,11 @@ public final class ReleaseDataModule {
     BoxStore provideMyObjectBox(Application application) {
         BoxStore boxStore = MyObjectBox.builder().androidContext(application).build();
         return boxStore;
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideOkHttpClient(OkHttpClient.Builder builder) {
+        return builder.build();
     }
 }
