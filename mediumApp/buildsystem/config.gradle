@@ -155,6 +155,8 @@ ext {
 
     //PickerView 
     libPickerView = 'com.contrarywind:Android-PickerView:3.2.4'
+    //progressbar 
+    libProgressBar = 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
     //recyclerview 分割线
     libRecyclerviewFlexibleDivider = 'com.yqritc:recyclerview-flexibledivider:1.4.0'

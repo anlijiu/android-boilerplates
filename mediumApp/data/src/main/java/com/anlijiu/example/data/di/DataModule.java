@@ -121,9 +121,9 @@ public class DataModule {
         if ((Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable())
                 && PermissionUtils.hasPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
-            cacheDir = context.getExternalCacheDir();
+            cacheDir = context.getExternalFilesDir("");
         } else {
-            cacheDir = context.getCacheDir();
+            cacheDir = context.getFilesDir();
         }
         return cacheDir;
     }

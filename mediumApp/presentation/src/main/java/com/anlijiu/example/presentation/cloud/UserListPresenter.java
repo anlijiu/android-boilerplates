@@ -31,25 +31,10 @@ public class UserListPresenter extends MvpPresenter<UserListView, UserListViewMo
     @Override
     public void onAttachView(@NonNull UserListView view, UserListViewModel viewModel) {
 
-        getUserList.execute(new DefaultObserver<List<User>>() {
-            @Override
-            public void onNext(List<User> list) {
-                Timber.d("ssss list size is %d", list.size());
-                ifViewModelAttached(viewModel -> viewModel.updateItems(list));
-            }
+        view.loadNextPageIntent().subscribe( ignore -> getUserList.execute(new GetUserListObserver(true),  GetUserList.Params.forLastId(viewModel.lastUserId())));
+        view.pullToRefreshIntent().subscribe( ignore -> getUserList.execute(new GetUserListObserver(), GetUserList.Params.create(1, 25, true)));
+        getUserList.execute(new GetUserListObserver(), GetUserList.Params.create(1, 25, false));
 
-            @Override
-            public void onError(Throwable exception) {
-                super.onError(exception);
-                Timber.d("ssss, getUserList error %s", exception.toString());
-                exception.printStackTrace();
-            }
-        }, GetUserList.Params.create(1, 25, true));
-
-        // Disposable increaseClickStream = view.increaseCount().subscribe(o -> ifViewAttached((view1, viewModel1) -> {
-        //     updateUserList.execute(new UpdateUserListObserver(), UpdateUserList.Params.add());
-        //     viewModel1.textValue.setValue("value is " + viewModel1.increase());
-        // }));
         Timber.e("UserListPresenter onAttachView");
     }
 
@@ -64,10 +49,33 @@ public class UserListPresenter extends MvpPresenter<UserListView, UserListViewMo
         Timber.e("UserListPresenter destroy");
     }
 
-    private final class UpdateUserListObserver extends DefaultObserver<List<User>> {
+    private final class GetUserListObserver extends DefaultObserver<List<User>> {
+        boolean isAdd = false;
+
+        public GetUserListObserver() {}
+
+        public GetUserListObserver(boolean isAdd) {
+            this.isAdd = isAdd;
+        }
+        @Override
+        protected void onStart() {
+            ifViewAttached((view, viewModel) -> {
+                if(!isAdd) {
+                    viewModel.refreshing.setValue(true);
+                }
+                viewModel.loading.setValue(true);
+            });
+        }
+
         @Override
         public void onNext(List<User> list) {
-            ifViewAttached( (view, viewModel) -> viewModel.updateItems(list));
+            ifViewModelAttached( (viewModel) -> {
+                if(isAdd) {
+                    viewModel.addItems(list);
+                } else {
+                    viewModel.updateItems(list);
+                }
+            } );
         }
     }
 }

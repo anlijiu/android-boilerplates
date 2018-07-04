@@ -19,6 +19,8 @@ import timber.log.Timber;
 
 public class UserListViewModel extends BaseViewModel {
     public final MutableLiveData<String> textValue = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> loading = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> refreshing = new MutableLiveData<>();
     public final SparseArray<AdapterDelegate> delegates = new SparseArray<AdapterDelegate>();
     public final UserListAdapter adapter = new UserListAdapter();
     public final MutableLiveData<List<User>> items = new MutableLiveData<>();
@@ -38,7 +40,33 @@ public class UserListViewModel extends BaseViewModel {
         }
 
         this.items.setValue(items);
+        textValue.setValue("item size is " + items.size());
+        loading.setValue(false);
+        refreshing.setValue(false);
+    }
 
-        textValue.setValue("hahahahah " + items.size());
+    public void addItems(List<User> items) {
+        Timber.d("ssss UserListViewModel addItems size is %d", items.size());
+        for(int i = 0; i < items.size(); i++) {
+            Timber.d("item id is %s", items.get(i).id());
+        }
+        List<User> orig = this.items.getValue();
+        orig.addAll(items);
+
+        this.items.setValue(orig);
+        textValue.setValue("item size is " + this.items.getValue().size());
+        loading.setValue(false);
+    }
+
+    public int size() {
+        return items.getValue() == null ? 0 : items.getValue().size();
+    }
+
+    public boolean isEmpty() {
+        return items.getValue() == null ? true : items.getValue().isEmpty();
+    }
+
+    public int lastUserId() {
+        return isEmpty() ? 1 : items.getValue().get(items.getValue().size()-1).id();
     }
 }

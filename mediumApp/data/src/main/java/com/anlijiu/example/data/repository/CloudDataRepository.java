@@ -25,6 +25,7 @@ public class CloudDataRepository implements CloudRepository {
     @Inject
     public CloudDataRepository() {}
 
+
     @Override
     public Observable<List<User>> getUsers(int idLastUserQueried, int perPage, boolean update) {
         return userCacheProviders.getUsers(userApi.getUsers(idLastUserQueried, perPage), new DynamicKey(idLastUserQueried), new EvictDynamicKey(update)).map(listReply -> listReply.getData());

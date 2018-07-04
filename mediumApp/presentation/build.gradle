@@ -98,6 +98,10 @@ dependencies {
     implementation config.libRxJava
     implementation config.libRxAndroid
     implementation config.libRxBinding
+    implementation config.libRxBindingRecyclerview
+    implementation config.libRxBindingSupportV4
+    implementation config.libRxBindingAppcompatV7
+    implementation config.libRxBindingRecyclerview
     implementation config.libRxPreferences
 
     implementation config.libRetrofit
@@ -108,6 +112,8 @@ dependencies {
 
     implementation config.libRxCache
     implementation config.libJolyglotGson 
+
+    implementation config.libProgressBar 
 
     debugImplementation config.debugDependencies.leakCanary
     releaseImplementation config.debugDependencies.leakCanary

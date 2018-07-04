@@ -65,7 +65,7 @@ public class BaseMvvmRecyclerViewAdapter<T, VB extends ViewDataBinding> extends 
         } else {
             this.items = Collections.emptyList();
         }
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
