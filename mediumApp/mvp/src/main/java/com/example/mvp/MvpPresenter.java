@@ -23,14 +23,14 @@ public abstract class MvpPresenter<V extends IMvpView, VM extends ViewModel> imp
      *
      * @param <V> The Type of the View
      */
-    public interface ViewAction<V, VM> {
+    public interface ViewAction<V> {
 
         /**
          * This method will be invoked to run the action. Implement this method to interact with the view.
          *
          * @param view The reference to the view. Not null.
          */
-        void run(@NonNull V view, VM viewModel);
+        void run(@NonNull V view);
     }
 
     public interface ViewModelAction<VM> {
@@ -43,11 +43,26 @@ public abstract class MvpPresenter<V extends IMvpView, VM extends ViewModel> imp
 
     @UiThread
     @Override
-    final public void attachView(V view, VM viewModel) {
+    final public void attachView(V view) {
         viewRef = new WeakReference<V>(view);
+        presenterDestroyed = false;
+        onAttachView(view);
+    }
+
+    public V getView() {
+        return viewRef == null ? null : viewRef.get();
+    }
+
+    public VM getViewModel() {
+        return viewModelRef == null ? null : viewModelRef.get();
+    }
+
+    @UiThread
+    @Override
+    final public void attachViewModel(VM viewModel) {
         viewModelRef = new WeakReference<>(viewModel);
         presenterDestroyed = false;
-        onAttachView(view, viewModel);
+        onAttachViewModel(viewModel);
     }
 
     /**
@@ -62,13 +77,12 @@ public abstract class MvpPresenter<V extends IMvpView, VM extends ViewModel> imp
      *                                   will not be executed since no view is attached)
      * @param action                     The {@link ViewAction} that will be executed if a view is attached. This is
      *                                   where you call view.isLoading etc. Use the view reference passed as parameter to {@link
-     *                                   ViewAction#run(Object, Object)}
+     *                                   ViewAction#run(Object)}
      */
-    protected final void ifViewAttached(boolean exceptionIfViewNotAttached, ViewAction<V, VM> action) {
+    protected final void ifViewAttached(boolean exceptionIfViewNotAttached, ViewAction<V> action) {
         final V view = viewRef == null ? null : viewRef.get();
-        final VM viewModel = viewModelRef == null ? null : viewModelRef.get();
         if (view != null) {
-            action.run(view, viewModel);
+            action.run(view);
         } else if (exceptionIfViewNotAttached) {
             throw new IllegalStateException(
                     "No View attached to Presenter. Presenter destroyed = " + presenterDestroyed);
@@ -79,9 +93,9 @@ public abstract class MvpPresenter<V extends IMvpView, VM extends ViewModel> imp
      * Calls {@link #ifViewAttached(boolean, ViewAction)} with false as first parameter (don't throw
      * exception if view not attached).
      *
-     * @see #ifViewAttached(boolean, ViewAction)
+     * @see #ifViewAttached(ViewAction)
      */
-    protected final void ifViewAttached(ViewAction<V, VM> action) {
+    protected final void ifViewAttached(ViewAction<V> action) {
         ifViewAttached(false, action);
     }
 
@@ -91,6 +105,7 @@ public abstract class MvpPresenter<V extends IMvpView, VM extends ViewModel> imp
             action.run(viewModel);
         }
     }
+ 
     /**
      * {@inheritDoc}
      */
@@ -108,8 +123,22 @@ public abstract class MvpPresenter<V extends IMvpView, VM extends ViewModel> imp
      * {@inheritDoc}
      */
     @Override
+    final public void detachViewModel() {
+        if (viewModelRef != null) {
+            viewModelRef.clear();
+            viewModelRef = null;
+        }
+
+        onDetachView();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void destroy() {
         detachView();
+        detachViewModel();
         presenterDestroyed = true;
     }
 }

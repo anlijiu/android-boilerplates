@@ -29,9 +29,9 @@ public class UserListPresenter extends MvpPresenter<UserListView, UserListViewMo
     }
 
     @Override
-    public void onAttachView(@NonNull UserListView view, UserListViewModel viewModel) {
+    public void onAttachView(@NonNull UserListView view) {
 
-        view.loadNextPageIntent().subscribe( ignore -> getUserList.execute(new GetUserListObserver(true),  GetUserList.Params.forLastId(viewModel.lastUserId())));
+        view.loadNextPageIntent().subscribe( ignore -> getUserList.execute(new GetUserListObserver(true),  GetUserList.Params.forLastId(getViewModel().lastUserId())));
         view.pullToRefreshIntent().subscribe( ignore -> getUserList.execute(new GetUserListObserver(), GetUserList.Params.create(1, 25, true)));
         getUserList.execute(new GetUserListObserver(), GetUserList.Params.create(1, 25, false));
 
@@ -39,8 +39,18 @@ public class UserListPresenter extends MvpPresenter<UserListView, UserListViewMo
     }
 
     @Override
+    public void onAttachViewModel(UserListViewModel viewModel) {
+
+    }
+
+    @Override
     public void onDetachView() {
         Timber.e("UserListPresenter onDetachView");
+    }
+
+    @Override
+    public void onDetachViewModel() {
+
     }
 
     @Override
@@ -59,7 +69,7 @@ public class UserListPresenter extends MvpPresenter<UserListView, UserListViewMo
         }
         @Override
         protected void onStart() {
-            ifViewAttached((view, viewModel) -> {
+            ifViewModelAttached((viewModel) -> {
                 if(!isAdd) {
                     viewModel.refreshing.setValue(true);
                 }

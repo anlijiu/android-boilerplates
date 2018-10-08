@@ -38,13 +38,14 @@ public abstract class BaseMvpActivity<V extends IMvpView, P extends MvpPresenter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = ViewModelProviders.of(this).get(viewModelClass());
+        presenter = presenter();
+        presenter.attachViewModel(viewModel());
+
         if (savedInstanceState != null && savedInstanceState.containsKey(BF_UNIQUE_KEY)) {
             uniqueKey = savedInstanceState.getString(BF_UNIQUE_KEY);
         } else {
             uniqueKey = UUID.randomUUID().toString();
         }
-
-        presenter = presenter();
 
         final LayoutInflater layoutInflater = getLayoutInflater();
         View view = createView(layoutInflater, layoutId(), container());
@@ -61,7 +62,7 @@ public abstract class BaseMvpActivity<V extends IMvpView, P extends MvpPresenter
     @Override
     protected void onStart() {
         super.onStart();
-        presenter.attachView(view(), viewModel());
+        presenter.attachView(view());
     }
 
     @Override

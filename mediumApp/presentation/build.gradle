@@ -67,7 +67,6 @@ dependencies {
 
     implementation config.libLifecycleRuntime
     implementation config.libLifecycleExtensions
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     annotationProcessor config.libLifecycleCompiler
 
     implementation config.libTimber

@@ -51,12 +51,22 @@ public class WidgetListPresenter extends MvpPresenter<WidgetListView, WidgetList
     }
 
     @Override
-    public void onAttachView(@NonNull WidgetListView view, WidgetListViewModel viewModel) {
+    public void onAttachView(@NonNull WidgetListView view) {
+
+    }
+
+    @Override
+    public void onAttachViewModel(WidgetListViewModel viewModel) {
 
     }
 
     @Override
     public void onDetachView() {
+
+    }
+
+    @Override
+    public void onDetachViewModel() {
 
     }
 

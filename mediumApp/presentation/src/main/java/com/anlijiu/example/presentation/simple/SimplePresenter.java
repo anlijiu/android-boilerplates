@@ -35,7 +35,7 @@ public class SimplePresenter extends MvpPresenter<SimpleView, SimpleViewModel> {
     }
 
     @Override
-    public void onAttachView(@NonNull SimpleView view, SimpleViewModel viewModel) {
+    public void onAttachView(@NonNull SimpleView view) {
 
         getSimpleList.execute(new DefaultObserver<List<SimpleItem>>() {
             @Override
@@ -45,7 +45,7 @@ public class SimplePresenter extends MvpPresenter<SimpleView, SimpleViewModel> {
             }
         }, null);
 
-        Disposable increaseClickStream = view.increaseCount().subscribe(o -> ifViewAttached((view1, viewModel1) -> {
+        Disposable increaseClickStream = view.increaseCount().subscribe(o -> ifViewModelAttached((viewModel1) -> {
             updateSimpleList.execute(new UpdateSimpleListObserver(), UpdateSimpleList.Params.add());
             viewModel1.textValue.setValue("value is " + viewModel1.increase());
         }));
@@ -54,9 +54,19 @@ public class SimplePresenter extends MvpPresenter<SimpleView, SimpleViewModel> {
     }
 
     @Override
+    public void onAttachViewModel(SimpleViewModel viewModel) {
+
+    }
+
+    @Override
     public void onDetachView() {
         Timber.e("SimplePresenter onDetachView");
         compositeDisposable.dispose();
+    }
+
+    @Override
+    public void onDetachViewModel() {
+
     }
 
     @Override
@@ -68,7 +78,7 @@ public class SimplePresenter extends MvpPresenter<SimpleView, SimpleViewModel> {
     private final class UpdateSimpleListObserver extends DefaultObserver<List<SimpleItem>> {
         @Override
         public void onNext(List<SimpleItem> list) {
-            ifViewAttached( (view, viewModel) -> viewModel.updateItems(list));
+            ifViewModelAttached( (viewModel) -> viewModel.updateItems(list));
         }
     }
 }
